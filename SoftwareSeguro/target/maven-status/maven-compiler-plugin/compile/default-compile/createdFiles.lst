@@ -1,0 +1,7 @@
+edu\utez\SoftwareSeguro\controllers\UserController.class
+edu\utez\SoftwareSeguro\config\ApiResponse.class
+edu\utez\SoftwareSeguro\services\UserService.class
+edu\utez\SoftwareSeguro\SoftwareSeguroApplication.class
+edu\utez\SoftwareSeguro\models\UserRepository.class
+edu\utez\SoftwareSeguro\controllers\UserDto.class
+edu\utez\SoftwareSeguro\models\User.class
