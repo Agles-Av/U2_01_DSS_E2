@@ -1,5 +1,4 @@
-import { useState, useReducer, useEffect } from 'react'
-import './App.css'
+import { useReducer, useEffect } from 'react'
 import AppRouter from './router/AppRouter';
 import AuthContext from './config/context/auth-context'
 import { authManager } from './config/context/auth-manager';

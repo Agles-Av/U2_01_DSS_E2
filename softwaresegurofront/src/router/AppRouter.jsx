@@ -4,6 +4,7 @@ import AuthContext from '../config/context/auth-context'
 import AdminLayout from '../modules/admin/AdminLayout'
 import Error403 from '../modules/errors/Error403'
 import Login from '../modules/login/Login'
+import AdminTable from '../modules/admin/AdminTable'
 
 const AppRouter = () => {
     const { user } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const AppRouter = () => {
     const paths = (role) => {
         switch (role) {
             case "admin":
-                return <Route path='/admin' element={<AdminLayout />} />
+                return <Route path='/admin' element={<AdminTable />} />
             default:
                 return <Route path='*' element={<Error403 />} />
         }
@@ -31,9 +32,7 @@ const AppRouter = () => {
             </>
         )
     );
-    return (
-        <div>AppRouter</div>
-    )
+    return <RouterProvider router={router}/> 
 }
 
 export default AppRouter
