@@ -33,19 +33,25 @@ const Login = () => {
       })
       console.log(response);
 
-      const userData = {
-        token: response.data.token,
-        roleUser: "admin",
-        signed: true,
+      if(response.data.user.correo === "cafatofo@gmail.com"){
+        const userData = {
+          token: response.data.token,
+          roleUser: "admin",
+          signed: true,
+        }
+        dispatch({ type: "SIGNIN", payload: userData });
+        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("roleUser", "admin");
+        localStorage.setItem("correouser", JSON.stringify(email));
+  
+        // Redirigir a la página de administrador
+        navigate("/admin");
       }
-      dispatch({ type: "SIGNIN", payload: userData });
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("roleUser", "admin");
-
-      // Redirigir a la página de administrador
-      navigate("/admin");
     } catch (error) {
       console.error("Error al iniciar sesión", error);
+      
+    }finally{
+      console.log("Finalizado");
       
     }
   };
