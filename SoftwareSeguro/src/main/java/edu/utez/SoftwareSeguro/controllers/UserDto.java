@@ -22,4 +22,14 @@ public class UserDto {
     public UserModel toEntity(){
         return new UserModel(nombre, apellido, correo, telefono, password, edad);
     }
+
+    public UserDto(Long id, String nombre, String apellido, String correo, String telefono, String password, Integer edad) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.password = password;
+        this.edad = edad;
+    }
 }

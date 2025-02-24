@@ -3,6 +3,7 @@ package edu.utez.SoftwareSeguro.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.utez.SoftwareSeguro.config.ApiResponse;
+import edu.utez.SoftwareSeguro.controllers.UserDto;
 import edu.utez.SoftwareSeguro.models.Bitacora;
 import edu.utez.SoftwareSeguro.models.BitacoraRepository;
 import edu.utez.SoftwareSeguro.models.UserModel;
@@ -59,7 +60,6 @@ public class UserService {
 
     @Transactional(rollbackFor = SQLException.class)
     public ResponseEntity<ApiResponse> getAll(String quien){
-        // 📌 REGISTRAR EN BITÁCORA
         registrarBitacora(quien, "GET", "usuarios", null, "Consulta todos los usuarios");
 
         return new ResponseEntity<>(new ApiResponse(userRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
@@ -94,7 +94,7 @@ public class UserService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Usuario No Encontrado"), HttpStatus.BAD_REQUEST);
         }
 
-        String validationMessage = validateUser(user);
+        String validationMessage = validateUser2(user);
         if (validationMessage != null) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, validationMessage), HttpStatus.BAD_REQUEST);
         }
@@ -108,8 +108,6 @@ public class UserService {
         elUser.setEdad(user.getEdad());
         elUser.setTelefono(user.getTelefono());
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        elUser.setPassword(encoder.encode(user.getPassword()));
 
         userRepository.save(elUser);
 
@@ -162,6 +160,29 @@ public class UserService {
 
         if (user.getPassword() == null || user.getPassword().length() < 8 || user.getPassword().length() > 20) {
             return "La contraseña debe tener entre 8 y 20 caracteres.";
+        }
+
+        return null; // Todo está bien
+    }
+    private String validateUser2(UserModel user) {
+        if (user.getCorreo() == null || !EMAIL_PATTERN.matcher(user.getCorreo()).matches()) {
+            return "Correo electrónico inválido.";
+        }
+
+        if (user.getNombre() == null || !NAME_PATTERN.matcher(user.getNombre()).matches() || user.getNombre().length() > 50) {
+            return "El nombre solo puede contener letras y no debe superar los 50 caracteres.";
+        }
+
+        if (user.getApellido() == null || !LASTNAME_PATTERN.matcher(user.getApellido()).matches() || user.getApellido().length() > 100) {
+            return "El apellido solo puede contener letras y espacios, y no debe superar los 100 caracteres.";
+        }
+
+        if (user.getTelefono() == null || !PHONE_PATTERN.matcher(user.getTelefono()).matches()) {
+            return "El teléfono debe contener solo números y tener entre 10 y 15 dígitos.";
+        }
+
+        if (user.getEdad() == null || user.getEdad() < 0 || user.getEdad() > 199) {
+            return "La edad debe estar entre 0 y 199 años.";
         }
 
         return null; // Todo está bien
