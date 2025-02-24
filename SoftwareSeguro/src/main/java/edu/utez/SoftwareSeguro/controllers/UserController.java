@@ -4,6 +4,7 @@ import edu.utez.SoftwareSeguro.config.ApiResponse;
 import edu.utez.SoftwareSeguro.models.UserModel;
 import edu.utez.SoftwareSeguro.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,28 +19,28 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<ApiResponse> getAll() {
-        return service.getAll();}
+    @GetMapping("/{quien}/")
+    public ResponseEntity<ApiResponse> getAll(@PathVariable String quien) {
+        return service.getAll(quien);}
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getById(@PathVariable Long id) {
         return service.findById(id);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse> create(@RequestBody UserModel user) {
-        return service.createUser(user);
+    @PostMapping("/{quien}/")
+    public ResponseEntity<ApiResponse> create(@RequestBody UserModel user, @PathVariable String quien) {
+        return service.createUser(user, quien);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> update(@RequestBody UserModel user, @PathVariable Long id) {
-        return service.updateUser(id, user);
+    @PutMapping("/{quien}/{id}")
+    public ResponseEntity<ApiResponse> update(@RequestBody UserModel user, @PathVariable Long id, @PathVariable String quien) {
+        return service.updateUser(id, user, quien);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
-        return service.deleteUser(id);
+    @DeleteMapping("/{quien}/{id}")
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id, @PathVariable String quien) {
+        return service.deleteUser(id, quien);
     }
 
 }
